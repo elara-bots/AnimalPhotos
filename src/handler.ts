@@ -24,7 +24,6 @@ export async function handleRequest(request: Request): Promise<Response> {
             flags: 1 << 6
           } 
         });
-
         switch (name) {
           case "cat": return int("cats", "photos", "🐈 Cat!");
           case "dog": return int("dogs", "photos", "🐕 Dog!");
