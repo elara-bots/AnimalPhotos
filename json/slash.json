@@ -1,0 +1,16 @@
+[
+	{ "name": "cat", "description": "View some cats!" },
+	{ "name": "otter", "description": "View some otters!" },
+	{ "name": "dog", "description": "View some dogs!" },
+	{ "name": "penguin", "description": "View some pengiuns!" },
+	{ "name": "fox", "description": "View some foxes!" },
+	{ "name": "panda", "description": "View some pandas!" },
+	{ "name": "bird", "description": "View some birds!" },
+	{ "name": "bunny", "description": "View some bunnies!" },
+	{ "name": "duck", "description": "View some ducks! QUACK!" },
+	{ "name": "redpanda", "description": "View some red pandas!" },
+	{ "name": "shibe", "description": "View some shibes" },
+	{ "name": "pj", "description": "View some PJ cat photos" },
+	{ "name": "tiggy", "description": "View some Tiggy cat photos" },
+	{ "name": "sylvester", "description": "View some Sylvester cat photos" }
+]
