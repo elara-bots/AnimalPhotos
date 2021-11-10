@@ -70,7 +70,7 @@ const error = (message: string) => respond({
     ],
     flags: 1 << 6
   }
-})
+});
 
 const respond = (response: APIInteractionResponse) => new Response(JSON.stringify(response), {headers: {'content-type': 'application/json'}})
 const status = (message: string, status = false) => ({ status, message });

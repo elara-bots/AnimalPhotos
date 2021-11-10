@@ -10,7 +10,7 @@
     "publish": "git add . && git commit -m \"...\" && git push && wrangler publish"
   },
   "author": "SUPERCHIEFYT (Elara-Discord-Bots, Elara-Services)",
-  "license": "MIT OR Apache-2.0",
+  "license": "MIT",
   "eslintConfig": {
     "root": true,
     "extends": [
