@@ -2,6 +2,12 @@ import { verify } from "./verify";
 import { InteractionType, InteractionResponseType, APIInteractionResponse, APIApplicationCommandInteraction } from "discord-api-types/v9";
 import { APIPingInteraction } from 'discord-api-types/payloads/v9/_interactions/ping'
 
+interface ImgStatus {
+  status: boolean,
+  message?: string,
+  image?: string
+}
+
 export async function handleRequest(request: Request): Promise<Response> {
   const url = new URL(request.url)
   switch(url.pathname) {
@@ -31,26 +37,45 @@ export async function handleRequest(request: Request): Promise<Response> {
           case "duck": return int("duck", "photos", "🦆 Quack!");
           case "redpanda": return int("redpanda", "photos", "<:RedPanda:849665956761305200> Red Panda!");
           case "shibe": return int("shibe", "photos", "Shiba!");
-          case "pj": return int("pj", "special", "🐈 PJ!")
-          case "tiggy": return int("tiggy", "special", "🐈 Tiggy!")
-          case "sylvester": return int("sylvester", "special", "🐈 Sylvester!")
+          case "pj": return int("pj", "special", "🐈 PJ!");
+          case "tiggy": return int("tiggy", "special", "🐈 Tiggy!");
+          case "sylvester": return int("sylvester", "special", "🐈 Sylvester!");
+          case "husky": return int("husky", "photos", "🐕 Husky!");
+          case "aww": {
+            const res = await reddit("aww");
+            if (!res.status || !res.image) return error(res!.message ?? "Unknown Issue while trying to fetch the subreddit.");
+            return respond({ 
+              type: InteractionResponseType.ChannelMessageWithSource, 
+              data: {
+                content: res.image,
+              } 
+            })
+          }
         }
-
-        return respond({ 
-          type: InteractionResponseType.ChannelMessageWithSource, 
-          data: {
-            content: "❌ The command you tried is a work in progress.",
-            flags: 1 << 6
-          } 
-        })
+        return error(`❌ The command you tried is a work in progress.`);
       }
   };
   return new Response(`request method: ${request.method}`)
 }
 
+const error = (message: string) => respond({
+  type: InteractionResponseType.ChannelMessageWithSource,
+  data: {
+    embeds: [
+      {
+        title: "INFO",
+        description: message,
+        color: 0xFF0000,
+        timestamp: new Date().toISOString()
+      }
+    ],
+    flags: 1 << 6
+  }
+})
+
 const respond = (response: APIInteractionResponse) => new Response(JSON.stringify(response), {headers: {'content-type': 'application/json'}})
 const status = (message: string, status = false) => ({ status, message });
-const getPhoto = async (type: string, name: string): Promise<{ status: boolean, message?: string, image?: string }> => {
+const getPhoto = async (type: string, name: string): Promise<ImgStatus> => {
     try {
       const ending = type ?? "photos";
       const res = await (await fetch(`https://my.elara.services/api/${ending}${ending === "special" ? `?type=${name}` : `/${name ?? "cats"}`}`)).json();
@@ -70,22 +95,33 @@ const int = async (name: string, type: string, title: string): Promise<any> => {
         flags: 1 << 6
       }
     });
-    return respond({
-      type: InteractionResponseType.ChannelMessageWithSource,
-      data: {
-        embeds: [
-          {
-            title,
-            url: r.image,
-            image: { url: r.image },
-            color: 11701759
-          }
-        ],
-        // components: [
-        //   { type: 1, components: [
-        //     { type: 2, style: 5, url: r.image, emoji: { id: "858375669418950666" } }
-        //   ] }
-        // ]
-      }
-    })
+    return image(r.image, title);
+};
+
+const image = (img: string, title?: string) => {
+  return respond({
+    type: InteractionResponseType.ChannelMessageWithSource,
+    data: {
+      embeds: [
+        {
+          title,
+          url: img,
+          image: { url: img },
+          color: 11701759
+        }
+      ]
+    }
+  })
 }
+
+const reddit = async (name: string): Promise<ImgStatus> => {
+    try {
+      const r = await (await fetch(`https://reddit.com/r/${name}/new.json?limit=100`)).json();
+      const children = r.data.children;
+      if (!children.length) return status(`Unable to fetch any posts from: ${name}`);
+      const random = children[Math.random() * children.length];
+      return { status: true, image: random.url };
+    } catch (err: Error|any) {
+      return status(err!.message ?? "Unknown Error while trying to fetch from the subreddit.");
+    }
+};
