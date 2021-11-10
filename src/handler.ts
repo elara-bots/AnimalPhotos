@@ -115,7 +115,9 @@ const image = (img: string, title?: string) => {
 
 const reddit = async (name: string): Promise<ImgStatus> => {
     try {
-      const r = await (await fetch(`https://reddit.com/r/${name}/new.json?limit=100`)).json();
+      // NOTE: Use 'hot' and 'new' 50% of the time.
+      const type = Math.random() < 0.50 ? "hot" : "new";
+      const r = await (await fetch(`https://reddit.com/r/${name}/${type}.json?limit=50`)).json();
       const children = r.data.children as { kind: string, data: { permalink: string } }[];
       if (!children.length) return status(`Unable to fetch any posts from: ${name}`);
       const random = children[Math.floor(Math.random() * children.length)];
