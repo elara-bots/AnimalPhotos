@@ -118,10 +118,12 @@ const reddit = async (name: string): Promise<ImgStatus> => {
       // NOTE: Use 'hot' and 'new' 50% of the time.
       const type = Math.random() < 0.50 ? "hot" : "new";
       const r = await (await fetch(`https://reddit.com/r/${name}/${type}.json?limit=50`)).json();
-      const children = r.data.children as { kind: string, data: { permalink: string } }[];
+      const children = r.data.children as { kind: string, data: { permalink: string, url: string } }[];
       if (!children.length) return status(`Unable to fetch any posts from: ${name}`);
       const random = children[Math.floor(Math.random() * children.length)];
-      return { status: true, image: `https://reddit.com${random.data.permalink}` };
+      let image = `https://reddit.com${random.data.permalink}`;
+      if (random.data.url.match(/.(jpg|jpeg|png)/gi)) image = random.data.url;
+      return { status: true, image };
     } catch (err: Error|any) {
       return status(err!.message ?? "Unknown Error while trying to fetch from the subreddit.");
     }
