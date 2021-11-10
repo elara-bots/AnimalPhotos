@@ -52,7 +52,7 @@ export async function handleRequest(request: Request): Promise<Response> {
           }
         }
         return error(`❌ The command you tried is a work in progress.`);
-      }
+      };
   };
   return new Response(`request method: ${request.method}`)
 }
@@ -116,10 +116,10 @@ const image = (img: string, title?: string) => {
 const reddit = async (name: string): Promise<ImgStatus> => {
     try {
       const r = await (await fetch(`https://reddit.com/r/${name}/new.json?limit=100`)).json();
-      const children = r.data.children;
+      const children = r.data.children as { kind: string, data: { url: string } }[];
       if (!children.length) return status(`Unable to fetch any posts from: ${name}`);
-      const random = children[Math.random() * children.length];
-      return { status: true, image: random.url };
+      const random = children[Math.floor(Math.random() * children.length)];
+      return { status: true, image: random.data.url };
     } catch (err: Error|any) {
       return status(err!.message ?? "Unknown Error while trying to fetch from the subreddit.");
     }
