@@ -60,6 +60,7 @@ export async function handleRequest(request: Request): Promise<Response> {
           case "tiggy": return int("tiggy", "special", "🐈 Tiggy!");
           case "sylvester": return int("sylvester", "special", "🐈 Sylvester!");
           case "husky": return int("husky", "photos", "🐕 Husky!");
+          case "pug": return int("pug", "photos", "🐕 Pug!");
           case "aww": {
             const res = await reddit("aww");
             if (!res.status || !res.image) return error(res!.message ?? "Unknown Issue while trying to fetch the subreddit.");
