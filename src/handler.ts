@@ -87,8 +87,8 @@ export async function handleRequest(request: Request): Promise<Response> {
           }
         }
         return error(`❌ The command you tried is a work in progress.`, edit);
-      };
-  };
+      }
+  }
   return new Response(`request method: ${request.method}`)
 }
 
