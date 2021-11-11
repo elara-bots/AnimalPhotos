@@ -16,7 +16,10 @@
     "extends": [
       "typescript",
       "prettier"
-    ]
+    ],
+    "rules": {
+      "@typescript-eslint/ban-ts-comment": 0
+    }
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^2.2.2",
