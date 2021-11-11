@@ -1,5 +1,5 @@
 import { verify } from "./verify";
-import { InteractionType, InteractionResponseType, APIInteractionResponse, APIEmbed, APIApplicationCommandInteraction, APIButtonComponent } from "discord-api-types/v9";
+import { InteractionType, InteractionResponseType, APIInteractionResponse, APIApplicationCommandInteraction, APIButtonComponent } from "discord-api-types/v9";
 import { APIPingInteraction } from 'discord-api-types/payloads/v9/_interactions/ping'
 
 interface ImgStatus {
