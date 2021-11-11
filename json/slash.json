@@ -15,5 +15,6 @@
 	{ "name": "sylvester", "description": "🐈 View some Sylvester cat photos!" },
 	{ "name": "husky", "description": "🐕 View some huskies!" },
 	{ "name": "pug", "description": "🐕 View some pugs!" },
-	{ "name": "aww", "description": "🤗 Posts from r/aww" }
+	{ "name": "aww", "description": "🤗 Posts from r/aww" },
+	{ "name": "invite", "description": "Invite me to your server!" }
 ]

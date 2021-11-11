@@ -25,6 +25,26 @@ export async function handleRequest(request: Request): Promise<Response> {
           } 
         });
         switch (name) {
+          case "invite": return respond({
+            type: InteractionResponseType.ChannelMessageWithSource,
+            data: {
+              embeds: [
+                {
+                  title: "Invite",
+                  description: "Press the button below to invite me to a server!",
+                  color: 2409471,
+                  timestamp: new Date().toISOString()
+                }
+              ],
+              components: [
+                {
+                  type: 1, components: [
+                    { style: 5, label: "Invite", emoji: { id: "841655450512261140" }, type: 2, url: `https://discord.com/api/oauth2/authorize?client_id=${interaction.application_id}&scope=applications.commands` }
+                  ]
+                }
+              ]
+            }
+          });
           case "cat": return int("cats", "photos", "🐈 Cat!");
           case "dog": return int("dogs", "photos", "🐕 Dog!");
           case "fox": return int("fox", "photos", "🦊 Fox!");
@@ -106,7 +126,7 @@ const image = (img: string, title?: string) => {
           title,
           url: img,
           image: { url: img },
-          color: 11701759
+          color: 2409471
         }
       ]
     }
