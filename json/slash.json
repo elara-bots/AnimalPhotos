@@ -4,7 +4,7 @@
 	{ "name": "dog", "description": "🐕 View some dogs!" },
 	{ "name": "penguin", "description": "🐧 View some penguins!" },
 	{ "name": "fox", "description": "🦊 View some foxes!" },
-	{ "name": "panda", "description": "🐼 View some pandas!" },
+	{ "name": "pandas", "description": "🐼 View some pandas!" },
 	{ "name": "bird", "description": "🐦 View some birds!" },
 	{ "name": "bunny", "description": "🐇 View some bunnies!" },
 	{ "name": "duck", "description": "🦆 View some ducks! QUACK!" },
@@ -16,5 +16,6 @@
 	{ "name": "husky", "description": "🐕 View some huskies!" },
 	{ "name": "pug", "description": "🐕 View some pugs!" },
 	{ "name": "aww", "description": "🤗 Posts from r/aww" },
-	{ "name": "invite", "description": "Invite me to your server!" }
+	{ "name": "invite", "description": "Invite me to your server!" },
+	{ "name": "panda", "description": "🐈 View some Panda cat photos!" }
 ]

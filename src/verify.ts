@@ -13,6 +13,7 @@ function hex2bin(hex: string) {
 
 const PUBLIC_KEY = crypto.subtle.importKey(
   'raw',
+   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   hex2bin(publicKey),
   {

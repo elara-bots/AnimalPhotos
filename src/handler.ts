@@ -14,7 +14,7 @@ export async function handleRequest(request: Request): Promise<Response> {
       case "/interactions": {
         if (!request.headers.get('X-Signature-Ed25519') || !request.headers.get('X-Signature-Timestamp')) return Response.redirect('https://discord.com')
         if (!await verify(request)) return new Response('', { status: 401 })
-        const interaction = await request.json() as APIPingInteraction | APIApplicationCommandInteraction;
+        const interaction = await request.json() as APIPingInteraction | APIApplicationCommandInteraction
         if (interaction.type === InteractionType.Ping) return respond({ type: InteractionResponseType.Pong });
         const name: string = interaction.data.name.toLowerCase();
         if (!name) return respond({ 
@@ -48,7 +48,8 @@ export async function handleRequest(request: Request): Promise<Response> {
           case "cat": return int("cats", "photos", "🐈 Cat!");
           case "dog": return int("dogs", "photos", "🐕 Dog!");
           case "fox": return int("fox", "photos", "🦊 Fox!");
-          case "panda": return int("panda", "photos", "🐼 Panda!");
+          case "pandas": return int("panda", "photos", "🐼 Panda!");
+          case "panda": return int("panda", "special", "🐈 Panda!");
           case "penguin": return int("penguin", "photos", "🐧 Penguin!");
           case "otter": return int("otter", "photos", "🦦 Otter!");
           case "bird": return int("bird", "photos", "🐦 Birb!");
