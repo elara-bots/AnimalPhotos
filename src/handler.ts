@@ -1,5 +1,5 @@
 import { verify } from "./verify";
-import { InteractionType, InteractionResponseType, APIInteractionResponse, APIApplicationCommandInteraction, APIButtonComponent } from "discord-api-types/v9";
+import { InteractionType, InteractionResponseType, APIInteractionResponse, APIApplicationCommandInteraction, APIButtonComponent, APIEmbedAuthor } from "discord-api-types/v9";
 import { APIPingInteraction } from 'discord-api-types/payloads/v9/_interactions/ping'
 
 interface ImgStatus {
@@ -11,6 +11,8 @@ interface ImgStatus {
 function component(components: APIButtonComponent[]) {
   return [ { type: 1, components } ]
 }
+
+const author: APIEmbedAuthor = { name: "Elara Services", icon_url: `https://cdn.superchiefyt.xyz/d/icons/Elara.png`, url: `https://my.elara.services/support` }
 
 export async function handleRequest(request: Request): Promise<Response> {
   const url = new URL(request.url)
@@ -97,6 +99,7 @@ const error = (message: string, edit?: boolean) => respond({
   data: {
     embeds: [
       {
+        author,
         title: "INFO",
         description: message,
         color: 0xFF0000,
@@ -138,6 +141,7 @@ const image = (img: string, title?: string, edit?: boolean, name?: string, userI
     data: {
       embeds: [
         {
+          author,
           title,
           url: img,
           image: { url: img },
