@@ -24,12 +24,12 @@ export async function handleRequest(request: Request): Promise<Response> {
         if (interaction.type === InteractionType.Ping) return respond({ type: InteractionResponseType.Pong });
         const userId = interaction.member!.user.id ?? interaction.user!.id;
         if (!userId) return error(`❌ Unable to find your user ID`);
-        let edit = false,
+        let edit: boolean|null = false,
             name = "";
         if (interaction.type === InteractionType.MessageComponent) {
           name = interaction.data.custom_id.split(":")[0];
-          edit = true;
-          if (interaction.data.custom_id.split(":")[1] !== userId) return error(`❌ You didn't run this command!`, false);
+          if (interaction.data.custom_id.split(":")[1] !== userId) edit = null;
+          else edit = true;
         } else name = interaction.data.name.toLowerCase();
         if (!name) return respond({ 
           type: InteractionResponseType.ChannelMessageWithSource, 
@@ -94,7 +94,7 @@ export async function handleRequest(request: Request): Promise<Response> {
   return new Response(`request method: ${request.method}`)
 }
 
-const error = (message: string, edit?: boolean) => respond({
+const error = (message: string, edit?: boolean|null) => respond({
   type: edit ? InteractionResponseType.UpdateMessage : InteractionResponseType.ChannelMessageWithSource,
   data: {
     embeds: [
@@ -123,7 +123,7 @@ const getPhoto = async (type: string, name: string): Promise<ImgStatus> => {
     }
 };
 
-const int = async (name: string, type: string, title: string, edit?: boolean, userId?: string): Promise<any> => {
+const int = async (name: string, type: string, title: string, edit?: boolean|null, userId?: string): Promise<any> => {
     const r = await getPhoto(type, name);
     if (!r.status || !r.image) return respond({
       type: edit ? InteractionResponseType.UpdateMessage : InteractionResponseType.ChannelMessageWithSource,
@@ -135,7 +135,7 @@ const int = async (name: string, type: string, title: string, edit?: boolean, us
     return image(r.image, title, edit, name, `${userId}`);
 };
 
-const image = (img: string, title?: string, edit?: boolean, name?: string, userId?: string) => {
+const image = (img: string, title?: string, edit?: boolean|null, name?: string, userId?: string) => {
   return respond({
     type: edit ? InteractionResponseType.UpdateMessage : InteractionResponseType.ChannelMessageWithSource,
     data: {
@@ -148,7 +148,8 @@ const image = (img: string, title?: string, edit?: boolean, name?: string, userI
           color: 2409471
         }
       ],
-      components: component([ { type: 2, custom_id: `${name}:${userId}`, style: 3, emoji: { id: "849713246813945876" } } ])
+      components: component([ { type: 2, custom_id: `${name}:${userId}`, style: 3, emoji: { id: "849713246813945876" } } ]),
+      flags: edit === null ? 1 << 6 : undefined,
     }
   })
 }
