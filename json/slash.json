@@ -17,5 +17,7 @@
 	{ "name": "pug", "description": "🐕 View some pugs!" },
 	{ "name": "aww", "description": "🤗 Posts from r/aww" },
 	{ "name": "invite", "description": "Invite me to your server!" },
-	{ "name": "panda", "description": "🐈 View some Panda cat photos!" }
+	{ "name": "panda", "description": "🐈 View some Panda cat photos!" },
+	{ "name": "raccoon", "description": "🦝 View some Raccoon photos!" },
+	{ "name": "koala", "description": "🐨 View some Koala photos!" }
 ]
