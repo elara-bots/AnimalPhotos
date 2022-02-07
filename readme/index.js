@@ -1,13 +1,12 @@
-let str = `# Animal Photos 
+let str = `# **Animal Photos**
+
+## [Invite](https://discord.com/api/oauth2/authorize?client_id=907969268660973609&scope=applications.commands)
+
 ### What is it?
 It's a slash commands bot to post photos of animals, simple.
 
-[You can invite it](https://discord.com/api/oauth2/authorize?client_id=907969268660973609&scope=applications.commands)
-
 ## Commands
-
-| Name | Description |
-| ----------- | ----------- |`;
+`;
 
 
 import path from 'path';
@@ -29,25 +28,28 @@ async function run() {
 }
 
 async function writeTesting() {
+    let list = [
+        `| Name | Description |`,
+        `| ----------- | ----------- |`
+    ]
     for (const slash of SlashCommands) {
-        str += `| \`/${slash.name}\` | ${slash.description} |`;
+        list.push(`| \`/${slash.name}\` | ${slash.description} |`);
     }
-
-    await fs.writeFile(path.resolve('../README.md'), str);
+    await fs.writeFile(path.resolve('README.md'), [ str, ...list ].join("\n"));
     return null;
 }
 
 async function tryAndPush(files, commitMessage) {
   try {
-    const result = await git.status();
-    if (result.files.length === 0) {
-      console.log('No changes to commit');
-      return;
-    }
+    // const result = await git.status();
+    // if (result.files.length === 0) {
+    //   console.log('No changes to commit');
+    //   return;
+    // }
 
-    await git.add(files);
-    await git.commit(commitMessage);
-    await git.push('origin', 'main');
+    // await git.add(files);
+    // await git.commit(commitMessage);
+    // await git.push('origin', 'main');
   } catch(e) {
     console.error(e);
   }
