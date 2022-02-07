@@ -12,10 +12,10 @@ It's a slash commands bot to post photos of animals, simple.
 
 import path from 'path';
 import fs from 'fs/promises';
-import SlashCommands from "../json/slash.json";
+import { SlashCommands } from "../slash.js";
 import simpleGit from 'simple-git';
 
-// We want it to be ran from root not scripts
+// We want it to be ran from root not readme
 const git = simpleGit({ baseDir: path.resolve('..') });
 
 async function run() {

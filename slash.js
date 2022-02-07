@@ -1,4 +1,4 @@
-[
+exports.SlashCommands = [
 	{ "name": "invite", "description": "Invite me to your server!" },
 
 	{ "name": "otter", "description": "🦦 View some otters!" },
