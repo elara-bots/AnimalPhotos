@@ -34,22 +34,23 @@ async function writeTesting() {
     ]
     for (const slash of SlashCommands) {
         list.push(`| \`/${slash.name}\` | ${slash.description} |`);
-    }
+    };
+    console.log(`Writing (${SlashCommands.length}) Slash commands to the README.md file.`);
     await fs.writeFile(path.resolve('README.md'), [ str, ...list ].join("\n"));
     return null;
 }
 
 async function tryAndPush(files, commitMessage) {
   try {
-    // const result = await git.status();
-    // if (result.files.length === 0) {
-    //   console.log('No changes to commit');
-    //   return;
-    // }
+    const result = await git.status();
+    if (result.files.length === 0) {
+      console.log('No changes to commit');
+      return;
+    }
 
-    // await git.add(files);
-    // await git.commit(commitMessage);
-    // await git.push('origin', 'main');
+    await git.add(files);
+    await git.commit(commitMessage);
+    await git.push('origin', 'main');
   } catch(e) {
     console.error(e);
   }
