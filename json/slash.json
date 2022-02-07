@@ -17,11 +17,11 @@
 	{ "name": "shibe", "description": "🐕 View some shibes!" },
 	{ "name": "husky", "description": "🐕 View some huskies!" },
 	{ "name": "pug", "description": "🐕 View some pugs!" },
+	{ "name": "chase", "description": "🐕 View some Chase dog photos!" },
 
 	{ "name": "cat", "description": "🐈 View some cats!" },
 	{ "name": "panda", "description": "🐈 View some Panda cat photos!" },
 	{ "name": "amber", "description": "🐈 View some Amber cat photos!" },
-	{ "name": "chase", "description": "🐕 View some Chase dog photos!" },
 	{ "name": "mischief", "description": "🐈 View some Mischief cat photos!" },
 	{ "name": "ollie", "description": "🐈 View some Ollie cat photos!" },
 	{ "name": "pj", "description": "🐈 View some PJ cat photos!" },
