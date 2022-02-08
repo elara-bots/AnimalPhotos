@@ -1,5 +1,5 @@
-exports.SlashCommands = [
 
+exports.SlashCommands = [
 	{ "name": "amber", "description": "🐈 View some Amber cat photos!" },
 	{ "name": "aww", "description": "🤗 Posts from r/aww" },
 	{ "name": "bird", "description": "🐦 View some birds!" },

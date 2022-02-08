@@ -7,28 +7,28 @@
 ## Commands
 | Name | Description |
 | ----------- | ----------- |
-| `/invite` | Invite me to your server! |
-| `/otter` | 🦦 View some otters! |
-| `/penguin` | 🐧 View some penguins! |
-| `/fox` | 🦊 View some foxes! |
-| `/pandas` | 🐼 View some pandas! |
+| `/amber` | 🐈 View some Amber cat photos! |
+| `/aww` | 🤗 Posts from r/aww |
 | `/bird` | 🐦 View some birds! |
 | `/bunny` | 🐇 View some bunnies! |
-| `/duck` | 🦆 View some ducks! QUACK! |
-| `/redpanda` | View some red pandas! |
-| `/aww` | 🤗 Posts from r/aww |
-| `/raccoon` | 🦝 View some Raccoon photos! |
-| `/koala` | 🐨 View some Koala photos! |
-| `/dog` | 🐕 View some dogs! |
-| `/shibe` | 🐕 View some shibes! |
-| `/husky` | 🐕 View some huskies! |
-| `/pug` | 🐕 View some pugs! |
-| `/chase` | 🐕 View some Chase dog photos! |
 | `/cat` | 🐈 View some cats! |
-| `/panda` | 🐈 View some Panda cat photos! |
-| `/amber` | 🐈 View some Amber cat photos! |
+| `/chase` | 🐕 View some Chase dog photos! |
+| `/dog` | 🐕 View some dogs! |
+| `/duck` | 🦆 View some ducks! QUACK! |
+| `/fox` | 🦊 View some foxes! |
+| `/husky` | 🐕 View some huskies! |
+| `/invite` | Invite me to your server! |
+| `/koala` | 🐨 View some Koala photos! |
 | `/mischief` | 🐈 View some Mischief cat photos! |
 | `/ollie` | 🐈 View some Ollie cat photos! |
+| `/otter` | 🦦 View some otters! |
+| `/panda` | 🐈 View some Panda cat photos! |
+| `/pandas` | 🐼 View some pandas! |
+| `/penguin` | 🐧 View some penguins! |
 | `/pj` | 🐈 View some PJ cat photos! |
-| `/tiggy` | 🐈 View some Tiggy cat photos! |
+| `/pug` | 🐕 View some pugs! |
+| `/raccoon` | 🦝 View some Raccoon photos! |
+| `/redpanda` | View some red pandas! |
+| `/shibe` | 🐕 View some shibes! |
 | `/sylvester` | 🐈 View some Sylvester cat photos! |
+| `/tiggy` | 🐈 View some Tiggy cat photos! |

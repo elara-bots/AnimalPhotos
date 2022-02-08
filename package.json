@@ -6,7 +6,7 @@
   "scripts": {
     "build": "webpack",
     "lint": "eslint --max-warnings=0 src",
-    "publish": "git add . && git commit -m \"...\" && git push && wrangler publish",
+    "publish": "node ./js/readme.js && git add . && git commit -m \"...\" && git push && wrangler publish",
     "readme": "node ./js/readme.js"
   },
   "author": "SUPERCHIEFYT (Elara-Discord-Bots, Elara-Services)",
