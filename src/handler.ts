@@ -1,6 +1,8 @@
 import { verify } from "./verify";
-import { InteractionType, InteractionResponseType, APIInteractionResponse, APIApplicationCommandInteraction, APIButtonComponent, APIEmbedAuthor } from "discord-api-types/v9";
+import { InteractionType, InteractionResponseType, MessageFlags, ButtonStyle, ComponentType, APIInteractionResponse, APIApplicationCommandInteraction, APIButtonComponent } from "discord-api-types/v9";
 import { APIPingInteraction } from "discord-api-types/payloads/v9/_interactions/ping"
+
+const support = `https://my.elara.services/support`
 
 interface ImgStatus {
   status: boolean,
@@ -12,63 +14,47 @@ function component(components: APIButtonComponent[]) {
   return [{ type: 1, components }]
 }
 
-const author: APIEmbedAuthor = { name: `Elara Services`, icon_url: `https://cdn.superchiefyt.xyz/d/icons/Elara.png`, url: `https://my.elara.services/support` }
+const author = { name: `Elara Services`, icon_url: `https://cdn.superchiefyt.xyz/d/icons/Elara.png`, url: support }
 
 export async function handleRequest(request: Request): Promise<Response> {
   const url = new URL(request.url);
   switch (url.pathname) {
 
-    case `/`: {
-      return respond({ status: true, message: `boop` })
-    }
+    case `/`: return respond({ status: true, message: `boop` });
+    case "/support": return Response.redirect(support);
 
     case `/interactions`: {
-      if (!request.headers.get('X-Signature-Ed25519') || !request.headers.get('X-Signature-Timestamp')) return Response.redirect('https://discord.com')
+      if (
+        !request.headers.get('X-Signature-Ed25519') || 
+        !request.headers.get('X-Signature-Timestamp')
+      ) return Response.redirect(support)
       if (!await verify(request)) return new Response('', { status: 401 })
-      const interaction = await request.json() as APIPingInteraction | APIApplicationCommandInteraction | any;
+      const interaction = await request.json() as any;
       if (interaction.type === InteractionType.Ping) return respond({ type: InteractionResponseType.Pong });
       const userId = interaction.member!.user.id ?? interaction.user!.id;
       if (!userId) return error(`❌ Unable to find your user ID`);
       let edit: boolean | null = false,
-        name = ``;
+          name = ``;
       if (interaction.type === InteractionType.MessageComponent) {
-        name = interaction.data.custom_id.split(`:`)[0];
-        if (interaction.data.custom_id.split(`:`)[1] !== userId) edit = null;
+          const split = interaction.data.custom_id.split(":");
+          name = split[0];
+        if (split[1] !== userId) edit = null;
         else edit = true;
       } else name = interaction.data.name.toLowerCase();
-      if (!name) return respond({
-        type: InteractionResponseType.ChannelMessageWithSource,
-        data: {
-          content: `❌ Unable to find the command name.`,
-          flags: 1 << 6
-        }
-      });
-
+      if (!name) return error(`❌ Unable to find the command name.`);
       const add = (name: string, title: string) => int(name, title, edit, userId),
-        { cat, dog } = {
-          cat: `🐈`,
-          dog: `🐕`
-        }
+          [ cat, dog ] = [ "🐈", "🐕" ];
 
       switch (name) {
         case `invite`: return respond({
           type: InteractionResponseType.ChannelMessageWithSource,
           data: {
-            embeds: [
-              {
-                title: `Invite`,
-                description: `Press the button below to invite me to a server!`,
-                color: 2409471,
-                timestamp: new Date().toISOString()
-              }
-            ],
-            components: [
-              {
-                type: 1, components: [
-                  { style: 5, label: `Invite`, emoji: { id: `841655450512261140` }, type: 2, url: `https://discord.com/api/oauth2/authorize?client_id=${interaction.application_id}&scope=applications.commands` }
-                ]
-              }
-            ]
+            flags: MessageFlags.SuppressEmbeds,
+            embeds: [ { title: `Invite`, color: 2409471 } ],
+            components: component([
+              { style: ButtonStyle.Link, type: ComponentType.Button, label: "Invite", url: `https://discord.com/api/oauth2/authorize?client_id=${interaction.application_id}&scope=applications.commands`, emoji: { id: "841655450512261140" } },
+              { style: ButtonStyle.Link, type: ComponentType.Button, label: "Support", url: support, emoji: { id: "847624594717671476" } }
+            ])
           }
         });
 
@@ -116,16 +102,10 @@ export async function handleRequest(request: Request): Promise<Response> {
 const error = (message: string, edit?: boolean | null) => respond({
   type: edit ? InteractionResponseType.UpdateMessage : InteractionResponseType.ChannelMessageWithSource,
   data: {
+    flags: MessageFlags.Ephemeral,
     embeds: [
-      {
-        author,
-        title: `INFO`,
-        description: message,
-        color: 0xFF0000,
-        timestamp: new Date().toISOString()
-      }
-    ],
-    flags: 1 << 6
+      { author, title: `INFO`, description: message, color: 0xFF0000, timestamp: new Date().toISOString() }
+    ]
   }
 });
 
@@ -143,13 +123,7 @@ const getPhoto = async (name: string): Promise<ImgStatus> => {
 
 const int = async (name: string, title: string, edit?: boolean | null, userId?: string): Promise<any> => {
   const r = await getPhoto(name);
-  if (!r.status || !r.image) return respond({
-    type: edit ? InteractionResponseType.UpdateMessage : InteractionResponseType.ChannelMessageWithSource,
-    data: {
-      content: `❌ ${r.message}`,
-      flags: 1 << 6
-    }
-  });
+  if (!r.status || !r.image) return error(r.message || "An error happened, try again later.", edit);
   return image(r.image, title, edit, name, `${userId}`);
 };
 
@@ -157,27 +131,25 @@ const image = (img: string, title?: string, edit?: boolean | null, name?: string
   return respond({
     type: edit ? InteractionResponseType.UpdateMessage : InteractionResponseType.ChannelMessageWithSource,
     data: {
-      embeds: [
-        {
-          author,
-          title,
-          url: img,
-          image: { url: img },
-          color: 2409471
+      embeds: [ { author, title, url: img, image: { url: img }, color: 2409471 } ],
+      components: component([
+        { 
+          type: ComponentType.Button, 
+          custom_id: `${name}:${userId}`, 
+          style: ButtonStyle.Success, 
+          emoji: { id: `849713246813945876` } 
         }
-      ],
-      components: component([{ type: 2, custom_id: `${name}:${userId}`, style: 3, emoji: { id: `849713246813945876` } }]),
-      flags: edit === null ? 1 << 6 : undefined,
+      ]),
+      flags: edit === null ? MessageFlags.Ephemeral : undefined,
     }
   })
 }
 
 const reddit = async (name: string): Promise<ImgStatus> => {
   try {
-    // NOTE: Use 'hot' and 'new' 50% of the time.
     const type = Math.random() < 0.50 ? `hot` : `new`;
     const r = await (await fetch(`https://reddit.com/r/${name}/${type}.json?limit=50`)).json();
-    const children = r.data.children as { kind: string, data: { permalink: string, url: string } }[];
+    const children: { kind: string, data: { permalink: string, url: string } }[] = r.data.children;
     if (!children.length) return status(`Unable to fetch any posts from: ${name}`);
     const random = children[Math.floor(Math.random() * children.length)];
     let image = `https://reddit.com${random.data.permalink}`;
