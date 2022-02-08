@@ -1,6 +1,5 @@
 import { verify } from "./verify";
-import { InteractionType, InteractionResponseType, MessageFlags, ButtonStyle, ComponentType, APIInteractionResponse, APIApplicationCommandInteraction, APIButtonComponent } from "discord-api-types/v9";
-import { APIPingInteraction } from "discord-api-types/payloads/v9/_interactions/ping"
+import { InteractionType, InteractionResponseType, MessageFlags, ButtonStyle, ComponentType, APIInteractionResponse, APIButtonComponent } from "discord-api-types/v9";
 
 const support = `https://my.elara.services/support`
 
