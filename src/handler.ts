@@ -122,6 +122,7 @@ const getPhoto = async (name: string): Promise<ImgStatus> => {
 
 const int = async (name: string, title: string, edit?: boolean | null, userId?: string): Promise<any> => {
   const r = await getPhoto(name);
+  console.log(r);
   if (!r.status || !r.image) return error(r.message || "An error happened, try again later.", edit);
   return image(r.image, title, edit, name, `${userId}`);
 };
