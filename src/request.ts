@@ -1,8 +1,7 @@
 export async function getJSON(url: string, { method = "GET", body = undefined, returnJSON = true, headers = undefined } = {}) {
     try {
-        let res = await fetch(url, { method, body, headers });
+        const res = await fetch(url, { method, body, headers });
         if (res.status !== 200) return null;
-        let json = await res.json();
         return await res[returnJSON ? "json" : "text"]()
     } catch {
         return null;

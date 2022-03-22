@@ -112,8 +112,8 @@ const error = (message: string, edit?: boolean | null) => respond({
 const respond = (response: APIInteractionResponse | object) => new Response(JSON.stringify(response), { headers: { 'content-type': 'application/json' } })
 const status = (message: string, status = false) => ({ status, message });
 const getPhoto = async (name: string): Promise<ImgStatus> => {
-  const random = (num: any) => Math.floor(Math.random() * num),
-        getImage = (image: string, photoType: string = "photos") => ({ status: true, image: api[photoType][image].replace("%RANDOM%", random(api.limits.photos[image])) });
+  // const random = (num: any) => Math.floor(Math.random() * num),
+  //       getImage = (image: string, photoType: string = "photos") => ({ status: true, image: api[photoType][image].replace("%RANDOM%", random(api.limits.photos[image])) });
   try {
 
     const res = await (await fetch(`https://my.elara.services/api/${name === "panda" ? `special?type=${name}` : `photos/${name ?? `cats`}`}`)).json();
