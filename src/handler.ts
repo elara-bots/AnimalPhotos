@@ -1,5 +1,7 @@
 import { verify } from "./verify";
 import { InteractionType, InteractionResponseType, MessageFlags, ButtonStyle, ComponentType, APIInteractionResponse, APIButtonComponent } from "discord-api-types/v9";
+import api from "./api"
+
 
 const support = `https://my.elara.services/support`
 
@@ -43,7 +45,6 @@ export async function handleRequest(request: Request): Promise<Response> {
       if (!name) return error(`❌ Unable to find the command name.`);
       const add = (name: string, title: string) => int(name, title, edit, userId),
           [ cat, dog ] = [ "🐈", "🐕" ];
-
       switch (name) {
         case `invite`: return respond({
           type: InteractionResponseType.ChannelMessageWithSource,
@@ -111,7 +112,10 @@ const error = (message: string, edit?: boolean | null) => respond({
 const respond = (response: APIInteractionResponse | object) => new Response(JSON.stringify(response), { headers: { 'content-type': 'application/json' } })
 const status = (message: string, status = false) => ({ status, message });
 const getPhoto = async (name: string): Promise<ImgStatus> => {
+  const random = (num: any) => Math.floor(Math.random() * num),
+        getImage = (image: string, photoType: string = "photos") => ({ status: true, image: api[photoType][image].replace("%RANDOM%", random(api.limits.photos[image])) });
   try {
+
     const res = await (await fetch(`https://my.elara.services/api/${name === "panda" ? `special?type=${name}` : `photos/${name ?? `cats`}`}`)).json();
     if (!res!.status) return status(res!.message ?? `No response from the API!`);
     return res;
