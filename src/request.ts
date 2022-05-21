@@ -6,4 +6,4 @@ export async function getJSON(url: string, { method = "GET", body = undefined, r
     } catch {
         return null;
     }
-};
+}
