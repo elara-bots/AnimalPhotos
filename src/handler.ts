@@ -1,6 +1,7 @@
 import { verify } from "./verify";
 import { InteractionType, InteractionResponseType, MessageFlags, ButtonStyle, ComponentType, APIInteractionResponse, APIButtonComponent } from "discord-api-types/v9";
 
+
 const support = `https://services.elara.workers.dev/support`
 
 interface ImgStatus {
@@ -43,7 +44,6 @@ export async function handleRequest(request: Request): Promise<Response> {
       if (!name) return error(`❌ Unable to find the command name.`);
       const add = (name: string, title: string) => int(name, title, edit, userId),
           [ cat, dog ] = [ "🐈", "🐕" ];
-
       switch (name) {
         case `invite`: return respond({
           type: InteractionResponseType.ChannelMessageWithSource,
