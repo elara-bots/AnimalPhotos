@@ -115,7 +115,9 @@ const respond = (response: APIInteractionResponse | object) => new Response(JSON
 const status = (message: string, status = false) => ({ status, message });
 const getPhoto = async (name: string): Promise<ImgStatus> => {
   try {
-    const res = await (await fetch(`https://services.elara.workers.dev/api/${name === "panda" ? `special?type=${name}` : `photos/${name ?? `cats`}`}`)).json();
+    const res = await fetchImage(name);
+    // const res = await (await fetch(`https://services.elara.workers.dev/api/${name === "panda" ? `special?type=${name}` : `photos/${name ?? `cats`}`}`)).json();
+    // @ts-expect-error
     if (!res!.status) return status(res!.message ?? `No response from the API!`);
     return res;
   } catch (err) {
