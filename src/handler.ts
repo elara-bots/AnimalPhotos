@@ -1,7 +1,7 @@
 import { verify } from "./verify";
 import { InteractionType, InteractionResponseType, MessageFlags, ButtonStyle, ComponentType, APIInteractionResponse, APIButtonComponent } from "discord-api-types/v9";
 
-const support = `https://my.elara.services/support`
+const support = `https://services.elara.workers.dev/support`
 
 interface ImgStatus {
   status: boolean,
@@ -13,7 +13,7 @@ function component(components: APIButtonComponent[]) {
   return [{ type: 1, components }]
 }
 
-const author = { name: `Elara Services`, icon_url: `https://cdn.superchiefyt.xyz/d/icons/Elara.png`, url: support }
+const author = { name: `Elara Services`, icon_url: `https://cdn.elara.workers.dev/d/icons/Elara.png`, url: support }
 
 export async function handleRequest(request: Request): Promise<Response> {
   const url = new URL(request.url);
@@ -112,7 +112,7 @@ const respond = (response: APIInteractionResponse | object) => new Response(JSON
 const status = (message: string, status = false) => ({ status, message });
 const getPhoto = async (name: string): Promise<ImgStatus> => {
   try {
-    const res = await (await fetch(`https://my.elara.services/api/${name === "panda" ? `special?type=${name}` : `photos/${name ?? `cats`}`}`)).json();
+    const res = await (await fetch(`https://services.elara.workers.dev/api/${name === "panda" ? `special?type=${name}` : `photos/${name ?? `cats`}`}`)).json();
     if (!res!.status) return status(res!.message ?? `No response from the API!`);
     return res;
   } catch (err) {
@@ -122,7 +122,6 @@ const getPhoto = async (name: string): Promise<ImgStatus> => {
 
 const int = async (name: string, title: string, edit?: boolean | null, userId?: string): Promise<any> => {
   const r = await getPhoto(name);
-  console.log(r);
   if (!r.status || !r.image) return error(r.message || "An error happened, try again later.", edit);
   return image(r.image, title, edit, name, `${userId}`);
 };
