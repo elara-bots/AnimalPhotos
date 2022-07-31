@@ -1,6 +1,3 @@
-// @ts-expect-error
-import Fetch from "@elara-services/fetch";
-
 const useExternal = false;
 const photosBase = `https://cdn.elara.workers.dev/api/photos`;
 
@@ -142,14 +139,8 @@ export const fetchImage = async (type: any) => {
 
 export const status = (message: string, status = false) => ({ status, message });
 
-export const GET = async (url: string, headers?: any, body?: any, timeout = 30000, returnJSON = true, sendRaw = false) => {
-  const res = Fetch(url, "GET");
-  if (timeout) res.timeout(timeout);
-  if (headers) res.header(headers);
-  if (body) res.body(body);
-  const r = await res.send().catch(() => ({ statusCode: 500 }));
-  if (sendRaw) return r;
-  if (r.statusCode !== 200) return null;
-  if (!returnJSON) return r;
-  return r.json();
+export const GET = async (url: string) => {
+  const res = await fetch(url);
+  if (res.status !== 200) return null;
+  return await res.json();
 };
