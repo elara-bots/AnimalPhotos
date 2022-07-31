@@ -1,6 +1,6 @@
 import { verify } from "./verify";
 import { InteractionType, InteractionResponseType, MessageFlags, ButtonStyle, ComponentType, APIInteractionResponse, APIButtonComponent } from "discord-api-types/v9";
-
+import { fetchImage } from "./api";
 
 const support = `https://services.elara.workers.dev/support`
 
@@ -16,20 +16,18 @@ function component(components: APIButtonComponent[]) {
 
 const author = { name: `Elara Services`, icon_url: `https://cdn.elara.workers.dev/d/icons/Elara.png`, url: support }
 
-export async function handleRequest(request: Request): Promise<Response> {
-  const url = new URL(request.url);
+export async function handleRequest(req: Request): Promise<Response> {
+  const url = new URL(req.url);
   switch (url.pathname) {
-
     case `/`: return respond({ status: true, message: `boop` });
     case "/support": return Response.redirect(support);
-
     case `/interactions`: {
       if (
-        !request.headers.get('X-Signature-Ed25519') || 
-        !request.headers.get('X-Signature-Timestamp')
+        !req.headers.get('X-Signature-Ed25519') || 
+        !req.headers.get('X-Signature-Timestamp')
       ) return Response.redirect(support)
-      if (!await verify(request)) return new Response('', { status: 401 })
-      const interaction = await request.json() as any;
+      if (!await verify(req)) return new Response('', { status: 401 })
+      const interaction = await req.json() as any;
       if (interaction.type === InteractionType.Ping) return respond({ type: InteractionResponseType.Pong });
       const userId = interaction.member!.user.id ?? interaction.user!.id;
       if (!userId) return error(`❌ Unable to find your user ID`);
@@ -95,7 +93,12 @@ export async function handleRequest(request: Request): Promise<Response> {
       return error(`❌ The command you tried is a work in progress.`, edit);
     }
   }
-  return new Response(`request method: ${request.method}`)
+  if (url.pathname.startsWith("/animal/")) {
+    const [ , name ] = url.pathname.split("/animal/");
+    const res = await fetchImage(name);
+    return respond(res);
+  }
+  return new Response(`request method: ${req.method}`)
 }
 
 const error = (message: string, edit?: boolean | null) => respond({
