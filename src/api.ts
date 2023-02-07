@@ -83,7 +83,7 @@ export const fetchImage = async (type: any) => {
     case "dogs": case "dog": return getImage("dogs");
     case "pugs": case "pug": return getImage("pugs");
     case "penguins": case "penguin": return getImage('penguins');
-    case "pandas": case "panda": return getImage('pandas');
+    case "pandas": return getImage('pandas');
     case "otter": case "otters": return { status: true, image: `https://otter.bruhmomentlol.repl.co/index/${Math.floor(Math.random() * 3116)}` };
     case "hugs": case "hug": return getImage('hugs');
     case "husky": case "huskys": return getImage('husky');
