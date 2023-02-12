@@ -49,7 +49,7 @@ export async function handleRequest(req: Request): Promise<Response> {
             flags: MessageFlags.SuppressEmbeds,
             embeds: [ { title: `Invite`, color: 2409471 } ],
             components: component([
-              { style: ButtonStyle.Link, type: ComponentType.Button, label: "Invite", url: `https://discord.com/api/oauth2/authorize?client_id=${interaction.application_id}&scope=applications.commands`, emoji: { id: "841655450512261140" } },
+              { style: ButtonStyle.Link, type: ComponentType.Button, label: "Invite", url: `https://discord.com/api/oauth2/authorize?client_id=${interaction.application_id}&scope=applications.commands+bot`, emoji: { id: "841655450512261140" } },
               { style: ButtonStyle.Link, type: ComponentType.Button, label: "Support", url: support, emoji: { id: "847624594717671476" } }
             ])
           }

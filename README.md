@@ -1,6 +1,6 @@
 # **Animal Photos**
 
-# [Invite](https://discord.com/api/oauth2/authorize?client_id=907969268660973609&scope=applications.commands) | [Support](https://services.elara.workers.dev/support)
+# [Invite](https://discord.com/api/oauth2/authorize?client_id=907969268660973609&scope=applications.commands+bot) | [Support](https://services.elara.workers.dev/support)
 
 **Q)** What is it?<br>**A)** It's a slash commands bot to post photos of animals, simple.
 
