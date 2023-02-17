@@ -1,7 +1,7 @@
 import { verify } from "./verify";
 import { InteractionType, InteractionResponseType, MessageFlags, ButtonStyle, ComponentType, APIInteractionResponse, APIButtonComponent } from "discord-api-types/v9";
 import { fetchImage } from "./api";
-
+const [cat, dog] = ["🐈", "🐕"];
 const support = `https://services.elara.workers.dev/support`
 
 interface ImgStatus {
@@ -33,16 +33,14 @@ export async function handleRequest(req: Request): Promise<Response> {
       const userId = interaction.member!.user.id ?? interaction.user!.id;
       if (!userId) return error(`❌ Unable to find your user ID`);
       let edit: boolean | null = false,
-        name = ``;
+          name = ``;
       if (interaction.type === InteractionType.MessageComponent) {
-        const split = interaction.data.custom_id.split(":");
-        name = split[0];
-        if (split[1] !== userId) edit = null;
-        else edit = true;
+        const [n, uId] = interaction.data.custom_id.split(":");
+        name = n;
+        edit = uId !== userId ? null : true;
       } else name = interaction.data.name.toLowerCase();
       if (!name) return error(`❌ Unable to find the command name.`);
-      const add = (name: string, title: string) => int(name, title, edit, userId),
-        [cat, dog] = ["🐈", "🐕"];
+      const add = (name: string, title: string) => int(name, title, edit, userId);
       switch (name) {
         case `invite`: return respond({
           type: InteractionResponseType.ChannelMessageWithSource,
