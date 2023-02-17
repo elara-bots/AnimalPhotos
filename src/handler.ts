@@ -13,6 +13,7 @@ interface ImgStatus {
 function component(components: APIButtonComponent[]) {
   return [{ type: 1, components }]
 }
+const supportButton: APIButtonComponent = { style: ButtonStyle.Link, type: ComponentType.Button, label: "Support", url: support, emoji: { id: "847624594717671476" } }
 
 const author = { name: `Elara Services`, icon_url: `https://cdn.elara.workers.dev/d/icons/Elara.png`, url: support }
 
@@ -50,7 +51,7 @@ export async function handleRequest(req: Request): Promise<Response> {
             embeds: [ { title: `Invite`, color: 2409471 } ],
             components: component([
               { style: ButtonStyle.Link, type: ComponentType.Button, label: "Invite", url: `https://discord.com/api/oauth2/authorize?client_id=${interaction.application_id}&scope=applications.commands+bot`, emoji: { id: "841655450512261140" } },
-              { style: ButtonStyle.Link, type: ComponentType.Button, label: "Support", url: support, emoji: { id: "847624594717671476" } }
+              supportButton
             ])
           }
         });
@@ -107,7 +108,8 @@ const error = (message: string, edit?: boolean | null) => respond({
     flags: MessageFlags.Ephemeral,
     embeds: [
       { author, title: `INFO`, description: message, color: 0xFF0000, timestamp: new Date().toISOString() }
-    ]
+    ],
+    components: [ { type: 1, components: [ supportButton ] } ]
   }
 });
 
@@ -141,7 +143,8 @@ const image = (img: string, title?: string, edit?: boolean | null, name?: string
           custom_id: `${name}:${userId}`, 
           style: ButtonStyle.Success, 
           emoji: { id: `849713246813945876` } 
-        }
+        },
+        supportButton
       ]),
       flags: edit === null ? MessageFlags.Ephemeral : undefined,
     }

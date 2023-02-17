@@ -24,7 +24,7 @@ export const apis = {
     amber: `${photosBase}/${useExternal ? "A" : "a"}mber/%RANDOM%.png`, // 9
     sylvester: `${photosBase}/sylvester/%RANDOM%.png`, // 56
     pj: `${photosBase}/PJ/%RANDOM%.png`,
-    tigger: `${photosBase}/tigger/%RANDOM%.png`,
+    tiggy: `${photosBase}/tiggy/%RANDOM%.png`,
     mischief: `${photosBase}/mischief/%RANDOM%.png`,
     chase: `${photosBase}/chase/%RANDOM%.png`,
     panda: `${photosBase}/panda/%RANDOM%.png`
@@ -51,7 +51,7 @@ export const limits = {
   sylvester: 56,
   husky: 67,
   pj: 113,
-  tigger: 132,
+  tiggy: 132,
   pokes: 9,
   mischief: 69,
   chase: 23,
@@ -129,7 +129,6 @@ export const fetchImage = async (type: any) => {
 
     case "redpanda": return getImage(`redpandas`);
     default: {
-      type = type.replace(/tiggy/gi, "tigger");
       // @ts-expect-error
       if (apis.special[type]) return getImage(type.toLowerCase(), "special");
       return status(`I was unable to find ${type}`);
