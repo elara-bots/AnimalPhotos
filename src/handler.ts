@@ -24,7 +24,7 @@ export async function handleRequest(req: Request): Promise<Response> {
     case "/support": return Response.redirect(support);
     case `/interactions`: {
       if (
-        !req.headers.get('X-Signature-Ed25519') || 
+        !req.headers.get('X-Signature-Ed25519') ||
         !req.headers.get('X-Signature-Timestamp')
       ) return Response.redirect(support)
       if (!await verify(req)) return new Response('', { status: 401 })
@@ -33,22 +33,22 @@ export async function handleRequest(req: Request): Promise<Response> {
       const userId = interaction.member!.user.id ?? interaction.user!.id;
       if (!userId) return error(`❌ Unable to find your user ID`);
       let edit: boolean | null = false,
-          name = ``;
+        name = ``;
       if (interaction.type === InteractionType.MessageComponent) {
-          const split = interaction.data.custom_id.split(":");
-          name = split[0];
+        const split = interaction.data.custom_id.split(":");
+        name = split[0];
         if (split[1] !== userId) edit = null;
         else edit = true;
       } else name = interaction.data.name.toLowerCase();
       if (!name) return error(`❌ Unable to find the command name.`);
       const add = (name: string, title: string) => int(name, title, edit, userId),
-          [ cat, dog ] = [ "🐈", "🐕" ];
+        [cat, dog] = ["🐈", "🐕"];
       switch (name) {
         case `invite`: return respond({
           type: InteractionResponseType.ChannelMessageWithSource,
           data: {
             flags: MessageFlags.SuppressEmbeds,
-            embeds: [ { title: `Invite`, color: 2409471 } ],
+            embeds: [{ title: `Invite`, color: 2409471 }],
             components: component([
               { style: ButtonStyle.Link, type: ComponentType.Button, label: "Invite", url: `https://discord.com/api/oauth2/authorize?client_id=${interaction.application_id}&scope=applications.commands+bot`, emoji: { id: "841655450512261140" } },
               supportButton
@@ -86,7 +86,7 @@ export async function handleRequest(req: Request): Promise<Response> {
             type: edit ? InteractionResponseType.UpdateMessage : InteractionResponseType.ChannelMessageWithSource,
             data: {
               content: res.image,
-              components: component([{ type: 2, custom_id: `aww:${userId}`, style: 3, emoji: { id: `849713246813945876` } }])
+              components: component(getComponents([{ type: 2, custom_id: `aww:${userId}`, style: 3, emoji: { id: `849713246813945876` } }]))
             }
           })
         }
@@ -95,7 +95,7 @@ export async function handleRequest(req: Request): Promise<Response> {
     }
   }
   if (url.pathname.startsWith("/animal/")) {
-    const [ , name ] = url.pathname.split("/animal/");
+    const [, name] = url.pathname.split("/animal/");
     const res = await fetchImage(name);
     return respond(res);
   }
@@ -106,12 +106,11 @@ const error = (message: string, edit?: boolean | null) => respond({
   type: edit ? InteractionResponseType.UpdateMessage : InteractionResponseType.ChannelMessageWithSource,
   data: {
     flags: MessageFlags.Ephemeral,
-    embeds: [
-      { author, title: `INFO`, description: message, color: 0xFF0000, timestamp: new Date().toISOString() }
-    ],
-    components: [ { type: 1, components: [ supportButton ] } ]
+    embeds: [{ author, title: `INFO`, description: message, color: 0xFF0000, timestamp: new Date().toISOString() }],
+    components: [{ type: 1, components: [supportButton] }],
   }
 });
+
 
 const respond = (response: APIInteractionResponse | object) => new Response(JSON.stringify(response), { headers: { 'content-type': 'application/json' } })
 const status = (message: string, status = false) => ({ status, message });
@@ -136,16 +135,15 @@ const image = (img: string, title?: string, edit?: boolean | null, name?: string
   return respond({
     type: edit ? InteractionResponseType.UpdateMessage : InteractionResponseType.ChannelMessageWithSource,
     data: {
-      embeds: [ { author, title, url: img, image: { url: img }, color: 2409471 } ],
-      components: component([
-        { 
-          type: ComponentType.Button, 
-          custom_id: `${name}:${userId}`, 
-          style: ButtonStyle.Success, 
-          emoji: { id: `849713246813945876` } 
-        },
-        supportButton
-      ]),
+      embeds: [{ author, title, url: img, image: { url: img }, color: 2409471 }],
+      components: component(getComponents([
+        {
+          type: ComponentType.Button,
+          custom_id: `${name}:${userId}`,
+          style: ButtonStyle.Success,
+          emoji: { id: `849713246813945876` }
+        }
+      ])),
       flags: edit === null ? MessageFlags.Ephemeral : undefined,
     }
   })
@@ -165,3 +163,10 @@ const reddit = async (name: string): Promise<ImgStatus> => {
     return status(err!.message ?? `Unknown Error while trying to fetch from the subreddit.`);
   }
 };
+
+
+const getComponents = (def?: APIButtonComponent[], alwaysReturn?: boolean) => {
+  if (!Array.isArray(def)) def = [];
+  if (Math.random() <= 0.50 || alwaysReturn) def.push(supportButton);
+  return def;
+}
