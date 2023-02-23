@@ -88,9 +88,9 @@ export const fetchImage = async (type: any) => {
     case "hugs": case "hug": return getImage('hugs');
     case "husky": case "huskys": return getImage('husky');
     case "bird": case "birb": {
-      const body = await GET(`https://some-random-api.ml/img/birb`);
+      const body = await GET(`https://some-random-api.ml/animal/bird`);
       if (!body) return status(`I was unable to fetch a bird image.`);
-      return { status: true, image: body.link };
+      return { status: true, image: body.image };
     }
 
     case "raccoon": case "raccoons": {
